@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vetra Logo Animation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow: hidden; height: 100%; }
+
+    :root {
+      --page-bg: #E8E8E8;
+      --slide-bg: #FCFCFC;
+      --slide-shadow: rgba(0,0,0,0.08);
+      --wordmark-fill: #141414;
+      --btn-bg: #FCFCFC;
+      --btn-border: #D7D8D9;
+      --btn-color: #343839;
+      --btn-hover-bg: #F3F5F7;
+      --btn-hover-border: #04C161;
+    }
+    .dark {
+      --page-bg: #141618;
+      --slide-bg: #1B1E24;
+      --slide-shadow: rgba(0,0,0,0.3);
+      --wordmark-fill: #FAFAFA;
+      --btn-bg: #252A34;
+      --btn-border: #485265;
+      --btn-color: #F3F5F7;
+      --btn-hover-bg: #373E4D;
+      --btn-hover-border: #04C161;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--page-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      gap: 24px;
+      transition: background 0.3s;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: min(960px, 100%);
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--slide-bg);
+      box-shadow: 0 2px 12px var(--slide-shadow);
+      transition: background 0.3s, box-shadow 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      scale: clamp(0.4, calc((100vw - 48px) / 960), 1);
+      transform-origin: center center;
+    }
+
+    /* Wordmark: slides in from right — with this ease-out it visually lands ~0.2s in */
+    .logo-wordmark {
+      opacity: 0;
+      transform: translateX(120px);
+      animation:
+        slideInRight 0.675s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+      animation-play-state: paused;
+    }
+
+    /* Icon: arrives 10ms before wordmark visually settles, then stumbles */
+    .logo-icon {
+      opacity: 0;
+      transform: translateX(-120px);
+      animation: slideInLeft 0.975s cubic-bezier(0.25, 0, 0.6, 1) 0.15s forwards;
+      animation-play-state: paused;
+      transform-origin: bottom center;
+    }
+
+    @keyframes slideInLeft {
+      0%   { opacity: 0; transform: translateX(-120px) rotate(0deg); }
+      45%  { opacity: 1; transform: translateX(0px) rotate(0deg); }
+      /* stumble: tips forward slightly like catching a foot */
+      55%  { opacity: 1; transform: translateX(1px) rotate(1.8deg); }
+      /* rocks back */
+      67%  { opacity: 1; transform: translateX(-0.5px) rotate(-0.6deg); }
+      /* tiny last nod */
+      80%  { opacity: 1; transform: translateX(0.3px) rotate(0.3deg); }
+      100% { opacity: 1; transform: translateX(0) rotate(0deg); }
+    }
+
+    @keyframes slideInRight {
+      0%   { opacity: 0; transform: translateX(120px); }
+      60%  { opacity: 1; transform: translateX(-4px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .logo-wordmark path { fill: var(--wordmark-fill); transition: fill 0.3s; }
+
+    .replay-btn {
+      padding: 8px 20px;
+      border: 1.5px solid var(--btn-border);
+      border-radius: 8px;
+      background: var(--btn-bg);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--btn-color);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .replay-btn:hover {
+      background: var(--btn-hover-bg);
+      border-color: var(--btn-hover-border);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide">
+    <div class="logo-container" id="logoContainer">
+      <!-- Icon (4 green petals) -->
+      <svg class="logo-icon" width="56" height="56" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 26.3481C0 24.6095 1.40946 23.2 3.14811 23.2H5.05946C13.7527 23.2 20.8 30.2473 20.8 38.9405V40.8519C20.8 42.5905 19.3905 44 17.6519 44H3.14811C1.40945 44 0 42.5905 0 40.8519V26.3481Z" fill="#04C161"/>
+        <path d="M1.52588e-06 3.14811C1.52588e-06 1.40945 1.40946 0 3.14811 0H17.6519C19.3905 0 20.8 1.40946 20.8 3.14811V5.05946C20.8 13.7527 13.7527 20.8 5.05946 20.8H3.14811C1.40946 20.8 1.52588e-06 19.3905 1.52588e-06 17.6519V3.14811Z" fill="#04C161"/>
+        <path d="M23.2 38.9405C23.2 30.2473 30.2473 23.2 38.9405 23.2H40.8519C42.5905 23.2 44 24.6095 44 26.3481V40.8519C44 42.5905 42.5905 44 40.8519 44H26.3481C24.6095 44 23.2 42.5905 23.2 40.8519V38.9405Z" fill="#04C161"/>
+        <path d="M23.2 3.14811C23.2 1.40945 24.6095 0 26.3481 0H40.8519C42.5905 0 44 1.40946 44 3.14811V17.6519C44 19.3905 42.5905 20.8 40.8519 20.8H38.9405C30.2473 20.8 23.2 13.7527 23.2 5.05946V3.14811Z" fill="#04C161"/>
+      </svg>
+
+      <!-- Spacer matching the original logo proportions -->
+      <div style="width: 14px;"></div>
+
+      <!-- Wordmark: VETRA -->
+      <svg class="logo-wordmark" width="200" height="44" viewBox="0 0 156.8 34.4004" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.1733 34.4C12.8916 34.4 12.6388 34.2227 12.537 33.9537L0.0467507 0.951217C-0.12656 0.493283 0.203437 0 0.683096 0H7.61495C7.89858 0 8.15264 0.179619 8.25313 0.451185L16.1834 21.8823C16.406 22.4839 17.2372 22.4839 17.4598 21.8823L25.39 0.451184C25.4905 0.179619 25.7446 0 26.0282 0H32.9169C33.3969 0 33.7269 0.493884 33.553 0.951927L21.0225 33.9544C20.9205 34.2231 20.6679 34.4 20.3864 34.4H13.1733Z" fill="#141414"/>
+        <path d="M35.8808 34.4C35.5048 34.4 35.2 34.0872 35.2 33.7013V0.698754C35.2 0.312846 35.5048 6.10352e-06 35.8808 6.10352e-06H56.9184C57.4072 6.10352e-06 57.7367 0.512815 57.5443 0.973881L54.9868 7.10139C54.8796 7.35837 54.6334 7.52501 54.361 7.52501H44.0524C43.6765 7.52501 43.3717 7.83772 43.3716 8.22354L43.3704 12.373C43.3702 12.759 43.6751 13.072 44.0512 13.072H51.3183C51.7919 13.072 52.1208 13.556 51.9572 14.0122L49.8206 19.9677C49.722 20.2425 49.467 20.425 49.1817 20.425H44.051C43.675 20.425 43.3702 20.7378 43.3702 21.1238V26.3483C43.3702 26.7342 43.675 27.047 44.051 27.047H56.2224C56.5985 27.047 56.9033 27.3598 56.9033 27.7458V33.7013C56.9033 34.0872 56.5985 34.4 56.2224 34.4H35.8808Z" fill="#141414"/>
+        <path d="M68.9307 34.4C68.5424 34.4 68.2276 34.0872 68.2276 33.7013V8.22375C68.2276 7.83785 67.9128 7.52501 67.5245 7.52501H58.3039C57.7991 7.52501 57.4588 7.01209 57.6576 6.55101L60.3 0.423503C60.4108 0.166585 60.665 6.10352e-06 60.9463 6.10352e-06H85.6969C86.0852 6.10352e-06 86.4 0.312846 86.4 0.698753V6.82626C86.4 7.21217 86.0852 7.52501 85.6969 7.52501H77.3246C76.9363 7.52501 76.6215 7.83785 76.6215 8.22375V33.7013C76.6215 34.0872 76.3067 34.4 75.9184 34.4H68.9307Z" fill="#141414"/>
+        <path d="M89.4878 34.4C89.1079 34.4 88.8 34.0872 88.8 33.7013V0.698754C88.8 0.312846 89.1079 6.10352e-06 89.4878 6.10352e-06H107.211C113.687 6.10352e-06 118.215 4.47201 118.215 10.879C118.215 15.3804 115.812 19.0929 112.076 20.8228C111.673 21.0095 111.506 21.5166 111.748 21.8936L119.087 33.3194C119.386 33.7842 119.057 34.4 118.511 34.4H110.847C110.612 34.4 110.393 34.278 110.267 34.0765L102.885 22.2965C102.759 22.095 102.54 21.973 102.305 21.973H97.741C97.3611 21.973 97.0532 22.2858 97.0532 22.6718V33.7013C97.0532 34.0872 96.7453 34.4 96.3654 34.4H89.4878ZM97.0532 13.7493C97.0532 14.1352 97.3611 14.448 97.741 14.448H106.703C108.65 14.448 109.962 13.029 109.962 11.008C109.962 8.94401 108.65 7.52501 106.703 7.52501H97.741C97.3611 7.52501 97.0532 7.83785 97.0532 8.22375V13.7493Z" fill="#141414"/>
+        <path d="M142.997 0.000396729C143.263 0.000396729 143.502 0.160242 143.599 0.403028L156.756 33.5403C156.92 33.9541 156.608 34.4003 156.154 34.4004H148.804C148.536 34.4004 148.295 34.2375 148.2 33.9916L145.81 27.7783L143.175 20.8121L139.223 10.5779L136.017 18.8772H141.25C141.696 18.8772 142.007 19.3096 141.857 19.7207L139.573 25.9834C139.481 26.2346 139.238 26.4026 138.965 26.4026H133.155L132.635 27.7783L130.245 33.9916C130.151 34.2376 129.91 34.4004 129.641 34.4004H122.246C121.792 34.4004 121.48 33.9546 121.644 33.5409L134.759 0.403645C134.855 0.16056 135.094 0.00044518 135.361 0.000396729H142.997Z" fill="#141414"/>
+      </svg>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 12px;">
+    <button class="replay-btn" onclick="replay()">Replay</button>
+    <button class="replay-btn" onclick="toggleDark()" id="darkBtn">Dark mode</button>
+    <button class="replay-btn" onclick="exportVideo()" id="exportBtn">Export WebM</button>
+  </div>
+
+  <script>
+    // Resolve paths relative to this document's own URL (works inside iframes too)
+    // Ensure trailing slash so relative paths resolve to this directory, not parent
+    const loc = location.href.endsWith('/') || location.href.includes('.') ? location.href : location.href + '/';
+    const BASE = new URL('.', loc).href;
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('darkBtn');
+      btn.textContent = document.body.classList.contains('dark') ? 'Light mode' : 'Dark mode';
+    }
+
+    const SOUND_VOLUME = 1;
+
+    // Tweak these two values to sync sound and animation
+    const SOUND_DELAY = 200;      // ms before sound plays
+    const ANIMATION_DELAY = 0;  // ms before animation starts
+
+    const isEmbedded = window !== window.top;
+    let soundTimer = null;
+    let animTimer = null;
+
+    function playSound() {
+      const s = new Audio(BASE + 'pen-click.mp3');
+      s.volume = SOUND_VOLUME;
+      s.play();
+    }
+
+    function startAnimations() {
+      document.querySelectorAll('.logo-icon, .logo-wordmark').forEach(el => {
+        el.style.animationPlayState = 'running';
+      });
+    }
+
+    function play(withSound) {
+      clearTimeout(soundTimer);
+      clearTimeout(animTimer);
+      if (withSound) soundTimer = setTimeout(playSound, SOUND_DELAY);
+      animTimer = setTimeout(startAnimations, ANIMATION_DELAY);
+    }
+
+    play(!isEmbedded);
+
+    function replay() {
+      const container = document.getElementById('logoContainer');
+      const icon = container.querySelector('.logo-icon');
+      const wordmark = container.querySelector('.logo-wordmark');
+
+      const newIcon = icon.cloneNode(true);
+      const newWordmark = wordmark.cloneNode(true);
+
+      icon.replaceWith(newIcon);
+      wordmark.replaceWith(newWordmark);
+
+      play(true);
+    }
+    // ── Export ──────────────────────────────────────────────
+
+    // Cubic-bezier solver (attempt Newton then bisect)
+    function cubicBezier(x1, y1, x2, y2) {
+      function sampleCurveX(t) { return ((1 - 3*x2 + 3*x1)*t + (3*x2 - 6*x1))*t*t + 3*x1*t; }
+      function sampleCurveY(t) { return ((1 - 3*y2 + 3*y1)*t + (3*y2 - 6*y1))*t*t + 3*y1*t; }
+      function solveCurveX(x) {
+        let t = x;
+        for (let i = 0; i < 8; i++) {
+          const dx = sampleCurveX(t) - x;
+          const d = ((3*(1-3*x2+3*x1)*t + 2*(3*x2-6*x1))*t + 3*x1);
+          if (Math.abs(dx) < 1e-6) return t;
+          if (Math.abs(d) < 1e-6) break;
+          t -= dx / d;
+        }
+        let lo = 0, hi = 1;
+        t = x;
+        for (let i = 0; i < 20; i++) {
+          const v = sampleCurveX(t) - x;
+          if (Math.abs(v) < 1e-6) return t;
+          v > 0 ? hi = t : lo = t;
+          t = (lo + hi) / 2;
+        }
+        return t;
+      }
+      return (x) => sampleCurveY(solveCurveX(x));
+    }
+
+    // Keyframe interpolation
+    function interpolateKeyframes(keyframes, t) {
+      if (t <= keyframes[0].at) return { ...keyframes[0] };
+      if (t >= keyframes[keyframes.length - 1].at) return { ...keyframes[keyframes.length - 1] };
+      for (let i = 0; i < keyframes.length - 1; i++) {
+        if (t >= keyframes[i].at && t <= keyframes[i + 1].at) {
+          const local = (t - keyframes[i].at) / (keyframes[i + 1].at - keyframes[i].at);
+          const a = keyframes[i], b = keyframes[i + 1];
+          return {
+            opacity: a.opacity + (b.opacity - a.opacity) * local,
+            x: a.x + (b.x - a.x) * local,
+            rotate: (a.rotate || 0) + ((b.rotate || 0) - (a.rotate || 0)) * local,
+          };
+        }
+      }
+    }
+
+    // Animation definitions matching the CSS exactly
+    const iconEasing = cubicBezier(0.25, 0, 0.6, 1);
+    const wordmarkEasing = cubicBezier(0.22, 1, 0.36, 1);
+
+    const iconKeyframes = [
+      { at: 0,    opacity: 0, x: -120, rotate: 0 },
+      { at: 0.45, opacity: 1, x: 0,    rotate: 0 },
+      { at: 0.55, opacity: 1, x: 1,    rotate: 1.8 },
+      { at: 0.67, opacity: 1, x: -0.5, rotate: -0.6 },
+      { at: 0.80, opacity: 1, x: 0.3,  rotate: 0.3 },
+      { at: 1,    opacity: 1, x: 0,    rotate: 0 },
+    ];
+
+    const wordmarkKeyframes = [
+      { at: 0,   opacity: 0, x: 120 },
+      { at: 0.6, opacity: 1, x: -4 },
+      { at: 1,   opacity: 1, x: 0 },
+    ];
+
+    async function loadSvgAsImage(svgEl, w, h, fillOverride) {
+      const svgClone = svgEl.cloneNode(true);
+      svgClone.setAttribute('width', w);
+      svgClone.setAttribute('height', h);
+      if (fillOverride) {
+        svgClone.querySelectorAll('path').forEach(p => {
+          if (p.getAttribute('fill') === '#141414' || p.getAttribute('fill') === '#FAFAFA') {
+            p.setAttribute('fill', fillOverride);
+          }
+        });
+      }
+      const data = new XMLSerializer().serializeToString(svgClone);
+      const blob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+      URL.revokeObjectURL(url);
+      return img;
+    }
+
+    async function exportVideo() {
+      if (!location.protocol.startsWith('http')) {
+        alert('Serve this documentation with "npx serve ." to export the animation.');
+        return;
+      }
+      const btn = document.getElementById('exportBtn');
+      btn.textContent = 'Exporting…';
+      btn.disabled = true;
+
+      const W = 1920, H = 1080;
+      const FPS = 60;
+      const TOTAL_DURATION = 2.5; // seconds — enough for animation + tail
+      const TOTAL_FRAMES = Math.ceil(TOTAL_DURATION * FPS);
+
+      // Icon animation: delay 0.15s, duration 0.975s (CSS values)
+      const ICON_DELAY = 0.15 + ANIMATION_DELAY / 1000;
+      const ICON_DUR = 0.975;
+      // Wordmark animation: delay 0.3s, duration 0.675s
+      const WM_DELAY = 0.3 + ANIMATION_DELAY / 1000;
+      const WM_DUR = 0.675;
+      // Sound
+      const SND_DELAY = SOUND_DELAY / 1000;
+
+      // Theme-aware export
+      const isDark = document.body.classList.contains('dark');
+      const slideBg = isDark ? '#1B1E24' : '#FCFCFC';
+      const wmFill = isDark ? '#FAFAFA' : '#141414';
+
+      // Load SVGs as images (scaled up 2x from preview for 1080p)
+      const iconSvg = document.querySelector('.logo-icon');
+      const wordmarkSvg = document.querySelector('.logo-wordmark');
+      const iconImg = await loadSvgAsImage(iconSvg, 112, 112);
+      const wordmarkImg = await loadSvgAsImage(wordmarkSvg, 400, 88, wmFill);
+
+      // Canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      // Center positions (matching layout: icon + 14px gap + wordmark)
+      const totalW = 112 + 28 + 400; // icon + gap(scaled) + wordmark
+      const baseX = (W - totalW) / 2;
+      const baseY = (H - 112) / 2;
+      const iconBaseX = baseX;
+      const iconBaseY = baseY;
+      const wmBaseX = baseX + 112 + 28;
+      const wmBaseY = baseY + (112 - 88) / 2; // vertically center wordmark to icon
+
+      // Decode audio
+      const audioCtx = new OfflineAudioContext(2, Math.ceil(TOTAL_DURATION * 44100), 44100);
+      const audioResponse = await fetch(BASE + 'pen-click.mp3');
+      const audioArrayBuffer = await audioResponse.arrayBuffer();
+      const audioBuffer = await audioCtx.decodeAudioData(audioArrayBuffer);
+      const source = audioCtx.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioCtx.destination);
+      source.start(SND_DELAY);
+      const renderedAudio = await audioCtx.startRendering();
+
+      // Create a real-time AudioContext to stream the rendered audio
+      const realtimeCtx = new AudioContext({ sampleRate: 44100 });
+      const audioSource = realtimeCtx.createBufferSource();
+      audioSource.buffer = renderedAudio;
+      const dest = realtimeCtx.createMediaStreamDestination();
+      audioSource.connect(dest);
+
+      // Combine canvas video + audio into one stream
+      const videoStream = canvas.captureStream(FPS);
+      const combinedStream = new MediaStream([
+        ...videoStream.getVideoTracks(),
+        ...dest.stream.getAudioTracks(),
+      ]);
+
+      const chunks = [];
+      const recorder = new MediaRecorder(combinedStream, {
+        mimeType: 'video/webm;codecs=vp9,opus',
+        videoBitsPerSecond: 8_000_000,
+      });
+      recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+
+      const done = new Promise(res => { recorder.onstop = res; });
+
+      recorder.start();
+      audioSource.start();
+
+      // Render frames
+      for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
+        const t = frame / FPS;
+
+        // Clear
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = slideBg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Icon state
+        let iconState = { opacity: 0, x: -120, rotate: 0 };
+        if (t >= ICON_DELAY) {
+          const raw = Math.min(1, (t - ICON_DELAY) / ICON_DUR);
+          const eased = iconEasing(raw);
+          iconState = interpolateKeyframes(iconKeyframes, eased);
+        }
+
+        // Wordmark state
+        let wmState = { opacity: 0, x: 120 };
+        if (t >= WM_DELAY) {
+          const raw = Math.min(1, (t - WM_DELAY) / WM_DUR);
+          const eased = wordmarkEasing(raw);
+          wmState = interpolateKeyframes(wordmarkKeyframes, eased);
+        }
+
+        // Draw icon
+        if (iconState.opacity > 0) {
+          ctx.save();
+          ctx.globalAlpha = iconState.opacity;
+          const cx = iconBaseX + 56 + iconState.x * 2; // scale offset to 1080p
+          const cy = iconBaseY + 112; // bottom center origin
+          ctx.translate(cx, cy);
+          ctx.rotate(iconState.rotate * Math.PI / 180);
+          ctx.drawImage(iconImg, -56, -112, 112, 112);
+          ctx.restore();
+        }
+
+        // Draw wordmark
+        if (wmState.opacity > 0) {
+          ctx.save();
+          ctx.globalAlpha = wmState.opacity;
+          ctx.drawImage(wordmarkImg, wmBaseX + wmState.x * 2, wmBaseY, 400, 88);
+          ctx.restore();
+        }
+
+        // Wait for next frame
+        await new Promise(res => setTimeout(res, 1000 / FPS));
+      }
+
+      recorder.stop();
+      await done;
+      realtimeCtx.close();
+
+      // Download
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `vetra-logo-animation${isDark ? '-dark' : ''}.webm`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      btn.textContent = 'Export WebM';
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>

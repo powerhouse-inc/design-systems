@@ -8,6 +8,8 @@ This repository contains self-contained design system packages for the following
 
 - **Achra** (`achra/`) — Includes style guide, color tokens, logos, website templates, document templates, and animations.
 - **Vetra** (`vetra/`) — Includes style guide, color tokens, logos, website templates, document templates, and animations.
+- **Connect** — Coming soon
+- **Powerhouse** — Coming soon
 
 Each package contains:
 
